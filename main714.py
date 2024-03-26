@@ -53,3 +53,4 @@ parse_insert()
 
 cursor.close()
 conn.close()
+#js-product-link-to-detail
