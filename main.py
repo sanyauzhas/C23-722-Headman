@@ -31,8 +31,6 @@ def parse_insert():
                 strg = picture_url
             with open(f'images/img'+str(picture_id)+'.jpg','wb') as d:
                 d.write(g.content) #загрузка в папку
-        cursor.execute("INSERT INTO sudar_jackets (image_id, image_url) VALUES (%s, %s)", (picture_id, strg)) #загрузка в таблицу
-        conn.commit()
         picture_id += 1
     for img in range(6, len(img_pictures),2):
         picture_url = img_pictures[img]['src']
@@ -52,7 +50,7 @@ def parse_insert():
         price = soup2.find('div', class_="b-price m-item-price")
         description = soup2.find('p', itemprop="description")
         cursor.execute("INSERT INTO sudar_jackets (image_id, image_url,product_url,product_name,product_price,product_desc) VALUES (%s, %s, %s, %s, %s, %s)",
-                       (picture_id, strg,str_url,name.text,price.text,description.text))  # загрузка в таблицу
+                       (picture_id-4, strg,str_url,name.text,price.text,description.text))  # загрузка в таблицу
         conn.commit()
         picture_id += 1
 
