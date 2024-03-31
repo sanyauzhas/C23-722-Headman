@@ -46,8 +46,13 @@ def parse_insert():
             with open(f'images/img' + str(picture_id) + '.jpg', 'wb') as d:
                 d.write(g.content)  # загрузка в папку
         str_url = 'https://sudar.su' + links[picture_id-5]['href']
-        cursor.execute("INSERT INTO sudar_jackets (image_id, image_url,product_url) VALUES (%s, %s, %s)",
-                       (picture_id, strg,str_url))  # загрузка в таблицу
+        response2 = requests.get(str_url)
+        soup2 = BeautifulSoup(response2.text,'html.parser')
+        name = soup2.find('h1', itemprop="name")
+        price = soup2.find('div', class_="b-price m-item-price")
+        description = soup2.find('p', itemprop="description")
+        cursor.execute("INSERT INTO sudar_jackets (image_id, image_url,product_url,product_name,product_price,product_desc) VALUES (%s, %s, %s, %s, %s, %s)",
+                       (picture_id, strg,str_url,name.text,price.text,description.text))  # загрузка в таблицу
         conn.commit()
         picture_id += 1
 
