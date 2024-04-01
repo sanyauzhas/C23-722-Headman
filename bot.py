@@ -1,5 +1,4 @@
 import random
-
 import telebot
 import psycopg2
 from telebot import types
@@ -33,16 +32,18 @@ def handle_id(message):
         cursor = conn.cursor()
         id = random.randint(1, 20)
         str_id = str(id)
-        cursor.execute("SELECT image_url, product_name, product_price, product_desc FROM sudar_jackets WHERE image_id = %s", (str_id,))
+        cursor.execute("SELECT image_url, product_name, product_price, product_desc, product_url FROM sudar_jackets WHERE image_id = %s", (str_id,))
         result = cursor.fetchone()
         image_url = result[0]
         name = result[1]
         price = result[2]
         description = result[3]
+        product_url = result[4]
         bot.send_photo(message.chat.id, image_url)
         bot.send_message(message.chat.id, name)
         bot.send_message(message.chat.id, price)
         bot.send_message(message.chat.id, description)
+        bot.send_message(message.chat.id, product_url)
     elif message.text.strip() == 'Открыть каталог':
         webbrowser.open(url)
     else:
@@ -56,19 +57,21 @@ def handle_id(message):
             password='pass'
         )
         cursor = conn.cursor()
-        cursor.execute("SELECT image_url, product_name, product_price, product_desc FROM sudar_jackets WHERE image_id = %s", (user_input,))
+        cursor.execute("SELECT image_url, product_name, product_price, product_desc, product_url FROM sudar_jackets WHERE image_id = %s", (user_input,))
         result = cursor.fetchone()
         if result:
             image_url = result[0]
             name = result[1]
             price = result[2]
             description = result[3]
+            product_url = result[4]
             bot.send_photo(message.chat.id, image_url)
             bot.send_message(message.chat.id, name)
             bot.send_message(message.chat.id, price)
             bot.send_message(message.chat.id, description)
+            bot.send_message(message.chat.id, product_url)
         else:
-            bot.send_message(message.chat.id, 'Такого ID нет')
+            bot.send_message(message.chat.id, 'Такого товара нет')
         cursor.close()
         conn.close()
 
