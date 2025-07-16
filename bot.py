@@ -4,7 +4,7 @@ import psycopg2
 from telebot import types
 import webbrowser
 
-token = '6885878989:AAE_XaZLdQqBA-I8PHxvsVoGiaq4kAl-kUQ'
+token = ''
 bot = telebot.TeleBot(token)
 url = "https://sudar.su/catalog/jackets/"
 
@@ -54,7 +54,7 @@ def handle_id(message):
             port= '5432',
             dbname='postgres',
             user='postgres',
-            password='pass'
+            password=''
         )
         cursor = conn.cursor()
         cursor.execute("SELECT image_url, product_name, product_price, product_desc, product_url FROM sudar_jackets WHERE image_id = %s", (user_input,))
